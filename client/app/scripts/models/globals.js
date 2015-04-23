@@ -2,7 +2,7 @@ var globals = function(){
 
     var globals = {};
 
-    globals.serverUrl = 'http://0.0.0.0:3060/';
+    globals.serverUrl = 'http://api.ihaveatribe.com';
 
     return globals;
 
