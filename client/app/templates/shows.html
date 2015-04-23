@@ -21,7 +21,7 @@
         <a class="btn btn-default pull-right" 
            ng-click="shows.showLater()"
            ng-show="shows.shows.length > 4" 
-           ng-disabled="shows.lastShown >= shows.shows.length">Later&nbsp;<i class="fa fa-arrow-right"></i></a>
+           ng-disabled="shows.lastShown >= shows.shows.length-1">Later&nbsp;<i class="fa fa-arrow-right"></i></a>
         <a class="btn btn-default" 
            ng-click="shows.showEarlier()"
            ng-show="shows.shows.length > 4" 
@@ -48,11 +48,11 @@
             </div>
           </div>
           <div class="col-xs-8">
-            <p><span class="asKey">Date</span>&nbsp;{{shows.activeShow.dateString}}</p>
-            <p><span class="asKey">Time</span>&nbsp;{{shows.activeShow.timeString}}</p>
-            <p><span class="asKey">Venue</span>&nbsp;{{shows.activeShow.venueName}}<span ng-if="shows.activeShow.address">,&nbsp;{{shows.activeShow.address}}</span></p>
-            <p><span class="asKey">City</span>&nbsp;{{shows.activeShow.city}}</p>
-            <p ng-if="shows.activeShow.country"><span class="asKey">Country</span>&nbsp;{{shows.activeShow.country}}</p>
+            <p><span class="text-muted">Date</span>&nbsp;{{shows.activeShow.dateString}}</p>
+            <p><span class="text-muted">Time</span>&nbsp;{{shows.activeShow.timeString}}</p>
+            <p><span class="text-muted">Venue</span>&nbsp;{{shows.activeShow.venueName}}<span ng-if="shows.activeShow.address">,&nbsp;{{shows.activeShow.address}}</span></p>
+            <p><span class="text-muted">City</span>&nbsp;{{shows.activeShow.city}}</p>
+            <p ng-if="shows.activeShow.country"><span class="text-muted">Country</span>&nbsp;{{shows.activeShow.country}}</p>
             <p ng-if="shows.activeShow.eventUrl"><a ng-href="{{shows.activeShow.eventUrl}}">Tickets/More info</a></p>
           </div>
         </div>
