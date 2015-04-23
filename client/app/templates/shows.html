@@ -1,0 +1,114 @@
+<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+  <div class="well">
+    <a class="btn btn-default stuck-top-left" ui-sref="home"><i class="fa fa-chevron-left"></i></a>
+    <h1 class="text-center">live</h2>
+    <div ng-if="shows.shows.length == 0">
+      <p class="text-center">No upcoming shows.</p>
+    </div>
+    <div ng-if="main.user.admin || shows.shows.length > 0">
+      <ul class="nav nav-pills nav-stacked">
+        <li ng-repeat="show in shows.shows track by $index" 
+            ng-if="$index >= shows.firstShown && $index <= shows.lastShown"
+            ng-class="show == shows.activeShow ? 'active' : ''">
+          <a href="javascript:void(0)"
+            ng-click="shows.updateActive(show);">
+            <span>{{show.dateString + ', ' + show.venueName + ', ' + show.city}}</span>
+          </a>
+        </li>
+      </ul>
+      <p></p>
+      <div>
+        <a class="btn btn-default pull-right" 
+           ng-click="shows.showLater()"
+           ng-show="shows.shows.length > 4" 
+           ng-disabled="shows.lastShown >= shows.shows.length">Later&nbsp;<i class="fa fa-arrow-right"></i></a>
+        <a class="btn btn-default" 
+           ng-click="shows.showEarlier()"
+           ng-show="shows.shows.length > 4" 
+           ng-disabled="shows.firstShown == 0"><i class="fa fa-arrow-left"></i>&nbsp;Earlier</a>
+      </div>
+      <p></p>
+      <p class="text-danger text-center" ng-if="shows.shows.length == 0">No shows added.</p>
+    </div>
+    <div ng-if="main.user.admin" class="text-center">
+      <button class="btn btn-link" data-toggle="modal" data-target="#newShowModal"><i class="fa fa-plus"></i>&nbsp;Add show</button>
+    </div>
+    <div ng-show="shows.activeShow != null">
+      <div class="well">
+        <button type="button" class="btn btn-default stuck-top-right" ng-click="shows.activeShow = null"><i class="fa fa-close"></i></button>
+        <div class="row">
+          <div class="col-xs-4" ng-show="shows.activeShow.imageUrl || main.user.admin">
+            <img class="img-responsive" ng-if="shows.activeShow.imageUrl != null" ng-src="{{shows.imageDir+shows.activeShow.imageUrl}}"/>
+            <div ng-if="main.user.admin">
+              <div class="form-group">
+                <label>Add or replace image</label>
+                <input type="file" id="showImage">
+              </div>
+              <button class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="shows.updateImage()">Update image</button>
+            </div>
+          </div>
+          <div class="col-xs-8">
+            <p><span class="asKey">Date</span>&nbsp;{{shows.activeShow.dateString}}</p>
+            <p><span class="asKey">Time</span>&nbsp;{{shows.activeShow.timeString}}</p>
+            <p><span class="asKey">Venue</span>&nbsp;{{shows.activeShow.venueName}}<span ng-if="shows.activeShow.address">,&nbsp;{{shows.activeShow.address}}</span></p>
+            <p><span class="asKey">City</span>&nbsp;{{shows.activeShow.city}}</p>
+            <p ng-if="shows.activeShow.country"><span class="asKey">Country</span>&nbsp;{{shows.activeShow.country}}</p>
+            <p ng-if="shows.activeShow.eventUrl"><a ng-href="{{shows.activeShow.eventUrl}}">Tickets/More info</a></p>
+          </div>
+        </div>
+        <div ng-if="main.user.admin">
+          <button class="btn btn-danger btn-sm pull-right" ng-click="shows.deleteShow()"><i class="fa fa-trash"></i>&nbsp;Delete show</button>
+          <span>&nbsp;<br>&nbsp;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- \shows_content -->
+
+
+<div class="modal fade" ng-controller="ShowsFormCtrl as showsForm" ng-if="main.user.admin" id="newShowModal" tabIndex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <form ng-submit="showsForm.addShow()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title">Add show</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" ng-show="showsForm.error"><button type="button" class="close" ng-click="showsForm.error = null"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{shows.error}}</div>
+          <div class="form-group" ng-class="showsForm.whenError ? 'has-error' : ''">
+            <label>Date and time *</label>
+            <div class="input-group">
+              <input date-time-picker class="form-control" ng-model="showsForm.newShow.when" type="text" placeholder="Date and time">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="showsForm.venueError ? 'has-error' : ''">
+            <label>Venue *</label>
+            <input type="text" class="form-control" ng-model="showsForm.newShow.venueName" placeholder="Venue">
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" class="form-control" ng-model="showsForm.newShow.address" placeholder="Address">
+          </div>
+          <div class="form-group" ng-class="showsForm.cityError ? 'has-error' : ''">
+            <label>City *</label>
+            <input type="text" class="form-control" ng-model="showsForm.newShow.city" placeholder="City">
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <input type="text" class="form-control" ng-model="showsForm.newShow.country" placeholder="Country">
+          </div>
+          <div class="form-group">
+            <label>Link</label>
+            <input type="url" class="form-control" ng-model="showsForm.newShow.eventUrl" placeholder="http://sample.com/event">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" ng-click="main.closeModal()">Close</button>
+          <input type="submit" class="btn btn-primary" value="Add show">
+        </div>
+      </div>
+    </form>
+  </div>
+</div><!-- \newShowModal -->

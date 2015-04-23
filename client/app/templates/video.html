@@ -1,0 +1,31 @@
+<div class="col-xs-12 col-sm-7 col-md-6 col-lg-5">
+  <div class="well">
+    <a class="btn btn-default stuck-top-left" ui-sref="home"><i class="fa fa-chevron-left"></i></a>
+    <h1 class="text-center">
+      watch
+    </h1>
+    <div class="embed-responsive embed-responsive-16by9">
+      <youtube videoid="{{video.activeVideo.videoid}}"></youtube>
+    </div>
+    <p></p>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">choose&nbsp;<span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li ng-repeat-start="ytVid in video.videos" ng-class="video.activeVideo == ytVid ? 'active' : ''">
+          <a href="javascript:void(0)" ng-click="video.changeVideo(ytVid)">{{ytVid.title}}</a>
+        </li>
+        <li ng-repeat-end ng-if="main.user">
+          <a href="javascript:void(0)" ng-click="video.deleteVideo(ytVid)" class="bg-danger"><i class="fa fa-trash"></i>&nbsp;{{ytVid.title}}</a>
+        </li>
+      </ul>
+    </div>
+    <form class="form-inline text-center" ng-if="main.user" ng-submit="video.addVideo()">
+      <div class="form-group">
+        <input type="text" value="Add" class="form-control" placeholder="Video ID" ng-model="video.newVideo">
+      </form>
+      <div class="form-group">
+        <input type="submit" value="Add" class="btn btn-primary"/>
+      </form>
+    </form>
+  </div>
+</div>

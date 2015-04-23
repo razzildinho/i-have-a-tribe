@@ -1,0 +1,73 @@
+.sticky-bottom{
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  .btn-default:not(.btn-sm){
+    background-color: fade(@btn-default-bg, 70%);
+    border-bottom: none;
+    margin-right: 5px;
+    &:focus{
+      outline: none;
+    }
+  }
+  .panel-default{
+    border-color: transparent;
+    border-top-color: @btn-default-border;
+    background-color: fade(@btn-default-bg, 70%);
+    margin-bottom: 0px;
+  }
+}
+.ui-view-container {
+  position: relative;
+  height: 65px;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all .5s ease-in-out;
+    -moz-transition:all .5s ease-in-out;
+    -o-transition:all .5s ease-in-out;
+    transition:all .5s ease-in-out;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+  -webkit-transform:scaleX(0.5);
+  -moz-transform:scaleX(0.5);
+  transform:scaleX(0.5);
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+  -webkit-transform:scaleX(1);
+  -moz-transform:scaleX(1);
+  transform:scaleX(1);
+}
+
+[ui-view].ng-leave {
+  opacity: 1; 
+  -webkit-transform:translateX(0);
+  -moz-transform:translateX(0);
+  transform:translateX(0);
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+  -webkit-transform:translateX(-100px);
+  -moz-transform:translateX(-100px);
+  transform:translateX(-100px);
+}
+.well > a{
+  .well{
+    &:hover, &:active{
+      background-color: fade(@well-bg, 60%);
+      text-decoration: none;
+    }
+  }
+  &:hover, &:active{
+    text-decoration: none;
+  }
+}
